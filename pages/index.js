@@ -1,24 +1,28 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { useAuth } from '@/lib/auth';
+import {Button, Heading, Text, Code } from '@chakra-ui/core';
 
 const Home = () => {
-  return <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+  const auth = useAuth();
 
-    <main>
-      <h1 className="title">Fast feedback!!</h1>
-
-      <p className='description'>
-        Get started by editing
-          <code>pages/index.js</code>
-      </p>
-
-    </main>
-
-
-
-  </div>
-}
+  return (
+    <div className="container">
+      <Head>
+        <title>Fast Feedback</title>
+      </Head>
+      <main>
+        <Heading>Fast feedback</Heading>
+        <Text>
+          Current user:
+          <Code>{auth.user ? auth.user.email : "None"}</Code>
+        </Text>
+        {auth.user ? (
+          <Button onClick={(e) => auth.signout()}>Sign Out</Button>
+        ) : (
+          <Button onClick={(e) => auth.signinWithGithub()}>Sign In</Button>
+        )}
+      </main>
+    </div>
+  );
+};
 export default Home;
