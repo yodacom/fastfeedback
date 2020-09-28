@@ -14,14 +14,23 @@ const Home = () => {
         justify="center"
         h="100vh"
       >
-        <Head>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (document.cookie && document.cookie.includes('fast-feedback-auth')) {
+                window.location.href = "/dashboard"
+              }
+            `
+          }}
+        />
           <title>Fast Feedback</title>
         </Head>
 
         <Icon color="black" name="logo" size="24" />
 
         {auth.user ? (
-         <Button onClick={(e) => auth.signout()}>Sign Out</Button>
+        <Button onClick={(e) => auth.signout()}>Sign Out</Button>
         ) : (
 
           <Button
