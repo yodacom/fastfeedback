@@ -13,16 +13,34 @@ import {
   Button,
   Input,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/core";
 
 import {createSite} from '@/lib/db'
 
 const AddSiteModal = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef();
+  const toast = useToast();
+  const auth = useAuth();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { handleSubmit, register } = useForm();
 
-  const { handleSubmit, register} = useForm();
-  const onCreateSite = (values) => createSite(values);
+  const onCreateSite = ({site, url}) => {
+    createSite({
+      authorId: auth.user.uid,
+      createdAt: new Date().toISOString(),
+      site,
+      url
+    });
+    toast({
+      title: "Success",
+      description: "We've added your site.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    onClose();
+  };
 
   return (
     <>
@@ -43,12 +61,11 @@ const AddSiteModal = () => {
             <FormControl>
               <FormLabel>Name</FormLabel>
                 <Input
-                  ref={initialRef}
-                  placeholder="My Site"
-                  name="site"
-                  ref={register({
-                    required: 'Required'
-                  })}
+                placeholder="My Site"
+                name="site"
+                ref={register({
+                  required: 'Required'
+                })}
                 />
             </FormControl>
 
