@@ -11,7 +11,7 @@ export default (_, res) => {
 
     res.status(200).json(doc.data());
   })
-    .catch((err { console.log('Error getting document', err);}))
+    .catch((err, { console.log('Error getting document', err);}))
 });
 
 res.status(200).json({ name: 'Next.js' });
